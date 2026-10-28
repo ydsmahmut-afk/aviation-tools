@@ -1,0 +1,74 @@
+[
+  {
+    "registration": "TC-JJJ",
+    "manufacturer": "Airbus",
+    "type": "A321",
+    "subtype": "A321neo",
+    "configuration": "J20-Y162",
+    "total_seats": 182,
+    "seatmaps_ref": "airbus-a321neo-thy"
+  },
+  {
+    "registration": "TC-JKA",
+    "manufacturer": "Airbus",
+    "type": "A321",
+    "subtype": "A321-200",
+    "configuration": "J16-Y164",
+    "total_seats": 180,
+    "seatmaps_ref": "airbus-a321-standard"
+  },
+  {
+    "registration": "TC-JJN",
+    "manufacturer": "Boeing",
+    "type": "777",
+    "subtype": "777-3ER",
+    "configuration": "J49-Y300",
+    "total_seats": 349,
+    "seatmaps_ref": "boeing-777-300er"
+  },
+  {
+    "registration": "TC-LNA",
+    "manufacturer": "Airbus",
+    "type": "A350",
+    "subtype": "A350-900",
+    "configuration": "J32-Y297",
+    "total_seats": 329,
+    "seatmaps_ref": "airbus-a350-900"
+  },
+  {
+    "registration": "TC-JSP",
+    "manufacturer": "Boeing",
+    "type": "737",
+    "subtype": "737-800",
+    "configuration": "Y189",
+    "total_seats": 189,
+    "seatmaps_ref": "boeing-737-800"
+  },
+  {
+    "registration": "TC-SOZ",
+    "manufacturer": "Boeing",
+    "type": "737",
+    "subtype": "737 MAX 8",
+    "configuration": "Y151",
+    "total_seats": 151,
+    "seatmaps_ref": "boeing-737-max8"
+  },
+  {
+    "registration": "TC-JVB",
+    "manufacturer": "Airbus",
+    "type": "A330",
+    "subtype": "A330-300",
+    "configuration": "J28-Y261",
+    "total_seats": 289,
+    "seatmaps_ref": "airbus-a330-300"
+  },
+  {
+    "registration": "TC-JRD",
+    "manufacturer": "Boeing",
+    "type": "787",
+    "subtype": "787-9",
+    "configuration": "J30-Y270",
+    "total_seats": 300,
+    "seatmaps_ref": "boeing-787-9"
+  }
+]
