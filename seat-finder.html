@@ -82,36 +82,81 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fffefa;
-      padding: 40px;
-      min-height: 360px;
+      padding: 32px;
+      max-width: 600px;
+    }
+
+    .search-box {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .workspace h3 {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-
-    .workspace p {
-      color: var(--muted);
-      font-size: 14px;
-      max-width: 400px;
-      line-height: 1.6;
+      gap: 12px;
       margin-bottom: 24px;
     }
 
-    .status {
-      display: inline-block;
-      padding: 7px 10px;
-      background: var(--sage);
-      border-radius: 4px;
-      font-size: 12px;
-      margin-bottom: 16px;
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 15px;
+      outline: none;
+      text-transform: uppercase;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--muted);
+    }
+
+    button {
+      padding: 12px 20px;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result-card {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      display: none;
+    }
+
+    .result-card h3 {
+      margin-top: 0;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .result-grid span strong {
+      color: var(--ink);
+    }
+
+    .error-msg {
+      color: #b33939;
+      font-size: 14px;
+      margin-top: 12px;
+      display: none;
     }
 
     footer {
@@ -121,6 +166,7 @@
       font-size: 12px;
       max-width: 1100px;
       margin: auto;
+      margin-top: 60px;
     }
   </style>
 </head>
@@ -134,18 +180,73 @@
     <div class="eyebrow">Interactive Module</div>
     <h1>3D Aircraft Seat Finder</h1>
     <p class="intro">
-      Match aircraft subtypes with real cabin configurations and explore seating arrangements.
+      Search by registration (e.g., TC-JJJ) to match aircraft subtypes with real cabin configurations.
     </p>
 
     <div class="workspace">
-      <span class="status">In development</span>
-      <h3>Data Pipeline & UI Integration</h3>
-      <p>
-        The aircraft database configuration and 3D rendering pipeline are currently being structured. Check back soon for updates.
-      </p>
+      <div class="search-box">
+        <input type="text" id="regInput" placeholder="Enter Registration (e.g. TC-JJJ)" maxlength="6">
+        <button onclick="searchAircraft()">Search</button>
+      </div>
+
+      <div id="errorMsg" class="error-msg">Aircraft not found in the database.</div>
+
+      <div id="resultCard" class="result-card">
+        <h3 id="resTitle">Aircraft Details</h3>
+        <div class="result-grid">
+          <div>Manufacturer: <strong id="resManufacturer">-</strong></div>
+          <div>Type / Subtype: <strong id="resType">-</strong></div>
+          <div>Configuration: <strong id="resConfig">-</strong></div>
+          <div>Total Seats: <strong id="resSeats">-</strong></div>
+        </div>
+      </div>
     </div>
   </main>
 
   <footer>AVIATION TOOLS · An independent project</footer>
+
+  <script>
+    let aircraftData = [];
+
+    // Sayfa yüklendiğinde JSON dosyasını çekiyoruz
+    fetch('aircrafts.json')
+      .then(response => response.json())
+      .then(data => {
+        aircraftData = data;
+      })
+      .catch(error => console.error('Error loading aircraft data:', error));
+
+    function searchAircraft() {
+      const query = document.getElementById('regInput').value.trim().toUpperCase();
+      const resultCard = document.getElementById('resultCard');
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (!query) return;
+
+      // JSON içinde tescil kodunu arıyoruz
+      const found = aircraftData.find(a => a.registration.toUpperCase() === query);
+
+      if (found) {
+        errorMsg.style.display = 'none';
+        document.getElementById('resTitle').innerText = `${found.registration} — ${found.subtype}`;
+        document.getElementById('resManufacturer').innerText = found.manufacturer;
+        document.getElementById('resType').innerText = `${found.type} (${found.subtype})`;
+        document.getElementById('resConfig').innerText = found.configuration;
+        document.getElementById('resSeats').innerText = found.total_seats;
+        
+        resultCard.style.display = 'block';
+      } else {
+        resultCard.style.display = 'none';
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    // Enter tuşuna basınca da arama yapabilsin
+    document.getElementById('regInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        searchAircraft();
+      }
+    });
+  </script>
 </body>
 </html>
